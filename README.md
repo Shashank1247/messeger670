@@ -1,44 +1,94 @@
-usage: git [-v | --version] [-h | --help] [-C <path>] [-c <name>=<value>]
-           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
-           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
-           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
-           [--config-env=<name>=<envvar>] <command> [<args>]
+# Messaging Application
 
-These are common Git commands used in various situations:
+## App Title: Messaging Application
+### Team Members:
+- Member 1: Shashank (sg3832)
+- Member 2: Rishab (RP946)
 
-start a working area (see also: git help tutorial)
-   clone     Clone a repository into a new directory
-   init      Create an empty Git repository or reinitialize an existing one
+## Introduction
+This is a messaging application that allows users to send and receive messages. The app integrates a React Native front-end with a Node.js backend, and uses MongoDB for data storage. This application demonstrates the use of server APIs for data interaction, and optionally integrates a NoSQL database (MongoDB) for storing and retrieving messages.
 
-work on the current change (see also: git help everyday)
-   add       Add file contents to the index
-   mv        Move or rename a file, a directory, or a symlink
-   restore   Restore working tree files
-   rm        Remove files from the working tree and from the index
+## Front-end
+### Overview
+The front-end of this application is built using React Native and includes two main screens: SenderScreen and ReceiverScreen. Users can navigate between these screens using a bottom tab navigator.
 
-examine the history and state (see also: git help revisions)
-   bisect    Use binary search to find the commit that introduced a bug
-   diff      Show changes between commits, commit and working tree, etc
-   grep      Print lines matching a pattern
-   log       Show commit logs
-   show      Show various types of objects
-   status    Show the working tree status
+### Screens
+1. **Sender Screen**: Allows users to input a sender username, recipient username, and a message. Users can then send the message by pressing the "Send" button.
 
-grow, mark and tweak your common history
-   branch    List, create, or delete branches
-   commit    Record changes to the repository
-   merge     Join two or more development histories together
-   rebase    Reapply commits on top of another base tip
-   reset     Reset current HEAD to the specified state
-   switch    Switch branches
-   tag       Create, list, delete or verify a tag object signed with GPG
 
-collaborate (see also: git help workflows)
-   fetch     Download objects and refs from another repository
-   pull      Fetch from and integrate with another repository or a local branch
-   push      Update remote refs along with associated objects
+![Alt text](<Screenshot 2024-06-07 at 9.44.12 PM.png>)
 
-'git help -a' and 'git help -g' list available subcommands and some
-concept guides. See 'git help <command>' or 'git help <concept>'
-to read about a specific subcommand or concept.
-See 'git help git' for an overview of the system.
+2. **Receiver Screen**: Allows users to input a recipient username and retrieve all messages sent to that recipient by pressing the "Retrieve" button. The retrieved messages are displayed in a list.
+
+![Alt text](<Screenshot 2024-06-07 at 9.45.12 PM.png>)
+
+### Navigation
+The app uses a bottom tab navigator to switch between the SenderScreen and ReceiverScreen.
+
+[Alt text](<Screenshot 2024-06-07 at 9.45.57 PM.png>)
+
+## Server APIs
+### Overview
+The backend is built using Node.js and Express. It provides two main APIs for sending and retrieving messages, and optionally includes an API for updating messages. The data is stored in a MongoDB database.
+
+### Endpoints
+1. **Send Message**
+   - **Endpoint**: `/sendMessage`
+   - **Method**: POST
+   - **Parameters**:
+     - `sender` (string): The username of the sender.
+     - `recipient` (string): The username of the recipient.
+     - `text` (string): The message text.
+   - **Example Request**:
+     ```json
+     {
+       "sender": "user1",
+       "recipient": "user2",
+       "text": "Hello, user2!"
+     }
+     ```
+   - **Example Response**:
+     ```json
+     {
+       "success": "Message sent",
+       "messageId": "60f7c9d9c2c6b58e2f4b4e23"
+     }
+     ```
+
+2. **Retrieve Messages**
+   - **Endpoint**: `/retrieveMessages`
+   - **Method**: GET
+   - **Parameters**: `recipient` (string)
+   - **Example Request**: `GET /retrieveMessages?recipient=user2`
+   - **Example Response**:
+     ```json
+     {
+       "messages": [
+         {
+           "sender": "user1",
+           "recipient": "user2",
+           "text": "Hello, user2!",
+           "timestamp": "2021-07-21T12:34:56.789Z"
+         },
+         {
+           "sender": "user3",
+           "recipient": "user2",
+           "text": "Hi there!",
+           "timestamp": "2021-07-22T09:21:45.123Z"
+         }
+       ]
+     }
+     ```
+
+
+## Database Schema
+### Collection: messages
+- **sender**: String - The username of the sender
+- **recipient**: String - The username of the recipient
+- **text**: String - The message text
+- **timestamp**: Date - The time the message was sent
+
+## Project Setup
+### Prerequisites
+- Node.js
+- MongoDB
